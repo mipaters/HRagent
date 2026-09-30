@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c131e">
+  <meta name="description" content="An executive demo of TalentScout AI, a governed AI workforce for telecom hiring and onboarding.">
+  <title>TalentScout AI — Autonomous Workforce Acquisition</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #e8eef2;
+      --muted: #a2b0bd;
+      --paper: #0c131e;
+      --white: #131f2e;
+      --navy: #101b2b;
+      --navy-2: #17273a;
+      --line: #283747;
+      --lime: #c7f36b;
+      --teal: #73d8c1;
+      --mint: #17352f;
+      --blue: #1c2d43;
+      --amber: #3b3020;
+      --section-alt: #101a27;
+      --surface-soft: #1a2938;
+      --surface-chip: #1c2a38;
+      --body-text: #c5d0d7;
+      --subtle-text: #8e9dab;
+      --warm-text: #e6bd70;
+      --warm-surface: #382f21;
+      --proof-text: #a8d2b4;
+      --proof-surface: #1a3029;
+      --shadow: 0 18px 48px rgba(0, 0, 0, .24);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      scroll-behavior: smooth;
+    }
+    body[data-theme="light"] {
+      color-scheme: light;
+      --ink: #142236;
+      --muted: #697789;
+      --paper: #f5f7f5;
+      --white: #fff;
+      --line: #e2e8e5;
+      --teal: #147d75;
+      --mint: #e9f4e8;
+      --blue: #eaf1fb;
+      --amber: #fff3d7;
+      --section-alt: #eaf0eb;
+      --surface-soft: #f3f6f4;
+      --surface-chip: #f2f5f3;
+      --body-text: #425064;
+      --subtle-text: #768291;
+      --warm-text: #786129;
+      --warm-surface: #fffaf0;
+      --proof-text: #365a48;
+      --proof-surface: #edf5ef;
+      --shadow: 0 18px 48px rgba(20, 34, 54, .08);
+    }
+    body[data-theme="light"] .topbar { border-color: var(--line); color: var(--ink); background: rgba(255,255,255,.96); }
+    body[data-theme="light"] .brand small { color: var(--muted); }
+    body[data-theme="light"] .nav-links { color: var(--muted); }
+    body[data-theme="light"] .theme-toggle { border-color: var(--line); color: var(--ink); background: var(--white); }
+    body[data-theme="light"] .theme-toggle:hover { border-color: var(--teal); color: var(--teal); }
+    body[data-theme="light"] .hero {
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 83% 28%, rgba(31,103,99,.13), transparent 34%),
+        radial-gradient(ellipse at 0% 100%, rgba(84,116,60,.09), transparent 38%),
+        #eef3ef;
+    }
+    body[data-theme="light"] .hero .eyebrow { color: var(--teal); }
+    body[data-theme="light"] .hero-copy, body[data-theme="light"] .hero-note { color: var(--muted); }
+    body[data-theme="light"] .hero-card { border-color: var(--line); background: rgba(255,255,255,.76); }
+    body[data-theme="light"] .card-top, body[data-theme="light"] .hero-stat small { color: var(--muted); }
+    body[data-theme="light"] .hero-stat strong { color: var(--ink); }
+    body[data-theme="light"] .hero-stat { border-color: var(--line); }
+    body[data-theme="light"] .btn-ghost { border-color: var(--line); color: var(--ink); background: rgba(255,255,255,.5); }
+    body[data-theme="light"] .interview-section { color: var(--ink); background: #e9efeb; }
+    body[data-theme="light"] .interview-section .eyebrow,
+    body[data-theme="light"] .speaker { color: var(--teal); }
+    body[data-theme="light"] .interview-section .section-head p,
+    body[data-theme="light"] .candidate-card small,
+    body[data-theme="light"] .score span,
+    body[data-theme="light"] .utterance p,
+    body[data-theme="light"] .assessment small { color: var(--muted); }
+    body[data-theme="light"] .candidate-card,
+    body[data-theme="light"] .transcript-card { border-color: var(--line); background: var(--white); }
+    body[data-theme="light"] .tags span { border-color: var(--line); color: var(--body-text); }
+    body[data-theme="light"] .transcript-head { border-color: var(--line); color: var(--ink); }
+    body[data-theme="light"] .assessment { background: var(--mint); }
+    body[data-theme="light"] .assessment b { color: var(--teal); }
+    body[data-theme="light"] .roi-highlight { color: var(--ink); background: #e9efeb; }
+    body[data-theme="light"] .roi-highlight small,
+    body[data-theme="light"] .roi-highlight p { color: var(--muted); }
+    body[data-theme="light"] .roi-highlight strong { color: var(--teal); }
+    body[data-theme="light"] .closing { color: var(--ink); background: #e9efeb; }
+    body[data-theme="light"] .closing p { color: var(--muted); }
+    body[data-theme="light"] .closing-list span { border-color: var(--line); color: var(--body-text); }
+    body[data-theme="light"] footer { color: var(--muted); background: #e1e9e4; }
+    body[data-theme="light"] .notice { color: var(--muted); }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); transition: background .2s, color .2s; }
+    button, a { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px; color: var(--teal);
+      font-size: 11px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 19px; height: 2px; background: currentColor; }
+    .topbar {
+      position: sticky; top: 0; z-index: 10; border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(16,27,43,.96); color: #f8faf7; backdrop-filter: blur(16px);
+    }
+    .nav { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 750; letter-spacing: -.03em; }
+    .brand-mark {
+      width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px;
+      color: var(--navy); background: var(--lime); font-size: 19px; font-weight: 900;
+    }
+    .brand small { display: block; margin-top: 1px; color: #aab7c2; font-size: 9px; font-weight: 650; letter-spacing: .14em; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 27px; color: #c0cad1; font-size: 12px; font-weight: 600; }
+    .nav-links a:hover { color: var(--lime); }
+    .nav-demo { padding: 10px 14px; border: 1px solid rgba(199,243,107,.45); border-radius: 8px; color: var(--lime); }
+    .theme-toggle { padding: 9px 11px; border: 1px solid rgba(255,255,255,.22); border-radius: 8px; color: #f4f7f4; background: rgba(255,255,255,.06); font-size: 10px; font-weight: 750; white-space: nowrap; }
+    .theme-toggle:hover { border-color: var(--lime); color: var(--lime); }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; }
+    .hero {
+      overflow: hidden; position: relative; padding: 88px 0 64px; color: white;
+      background:
+        radial-gradient(ellipse at 83% 28%, rgba(31,103,99,.33), transparent 34%),
+        radial-gradient(ellipse at 0% 100%, rgba(84,116,60,.16), transparent 38%),
+        var(--navy);
+    }
+    .hero::after {
+      content: ""; position: absolute; right: -120px; top: 20px; width: 470px; height: 470px;
+      border: 1px solid rgba(199,243,107,.12); border-radius: 50%;
+      box-shadow: 0 0 0 45px rgba(199,243,107,.025), 0 0 0 92px rgba(199,243,107,.02);
+      pointer-events: none;
+    }
+    .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.2fr .8fr; gap: 54px; align-items: center; }
+    .hero .eyebrow { color: var(--lime); }
+    h1 { max-width: 720px; margin: 20px 0 18px; font-size: clamp(42px, 5.6vw, 70px); line-height: .99; letter-spacing: -.065em; }
+    .hero-copy { max-width: 640px; margin: 0; color: #c1cbd2; font-size: 16px; line-height: 1.75; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .btn {
+      min-height: 45px; padding: 0 17px; display: inline-flex; justify-content: center; align-items: center; gap: 9px;
+      border: 1px solid transparent; border-radius: 8px; font-size: 12px; font-weight: 750; transition: transform .18s, background .18s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { color: var(--navy); background: var(--lime); }
+    .btn-primary:hover { background: #d6ff86; }
+    .btn-ghost { border-color: rgba(255,255,255,.22); color: white; background: rgba(255,255,255,.04); }
+    .hero-note { margin-top: 22px; color: #93a1ad; font-size: 10px; }
+    .hero-note span { color: var(--lime); }
+    .hero-card {
+      padding: 23px; border: 1px solid rgba(255,255,255,.13); border-radius: 15px;
+      background: rgba(255,255,255,.055); box-shadow: 0 26px 60px rgba(0,0,0,.16); backdrop-filter: blur(8px);
+    }
+    .card-top { display: flex; align-items: center; justify-content: space-between; color: #aab9c3; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .live-dot { display: inline-flex; align-items: center; gap: 7px; color: var(--lime); font-size: 9px; letter-spacing: .06em; }
+    .live-dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 12px var(--lime); }
+    .hero-stat { display: flex; align-items: end; justify-content: space-between; margin-top: 25px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .hero-stat:last-of-type { padding-bottom: 0; border: 0; }
+    .hero-stat strong { color: white; font-size: 31px; letter-spacing: -.05em; }
+    .hero-stat small { display: block; margin-top: 3px; color: #99a8b3; font-size: 10px; }
+    .trend { color: var(--lime); font-size: 10px; font-weight: 750; }
+    .ticker { overflow: hidden; border-bottom: 1px solid var(--line); background: var(--white); }
+    .ticker-inner { display: flex; justify-content: space-between; gap: 20px; padding: 16px 0; color: var(--subtle-text); font-size: 10px; font-weight: 700; white-space: nowrap; }
+    .ticker-inner span::before { content: "✳"; margin-right: 8px; color: var(--teal); }
+    section { padding: 80px 0; }
+    .section-head { max-width: 700px; margin-bottom: 34px; }
+    .section-head h2 { margin: 13px 0 10px; font-size: clamp(29px, 4vw, 44px); letter-spacing: -.055em; line-height: 1.08; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .problem-section { padding-top: 60px; }
+    .problem-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 54px; align-items: center; }
+    .problem-grid h2 { margin: 13px 0; font-size: clamp(30px, 4vw, 43px); line-height: 1.08; letter-spacing: -.055em; }
+    .problem-grid p { color: var(--muted); font-size: 13px; line-height: 1.75; }
+    .pain-list { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    .pain {
+      display: flex; align-items: flex-start; gap: 10px; min-height: 76px; padding: 15px;
+      border: 1px solid var(--line); border-radius: 10px; background: var(--white); color: var(--body-text); font-size: 11px; line-height: 1.5;
+    }
+    .pain b { color: #c66c4d; font-size: 13px; }
+    .walkthrough { color: var(--ink); background: var(--section-alt); }
+    .walkthrough .section-head { margin-bottom: 28px; }
+    .walkthrough .section-head h2 { color: var(--ink); }
+    .walk-shell { overflow: hidden; border-radius: 16px; background: var(--white); box-shadow: var(--shadow); }
+    .walk-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,.12); }
+    .walk-tile {
+      min-height: 130px; padding: 23px; border: 0; text-align: left; color: var(--body-text); background: var(--surface-soft);
+      transition: background .2s, color .2s;
+    }
+    .walk-tile:hover { background: var(--surface-chip); }
+    .walk-tile[aria-selected="true"] { color: var(--navy); background: var(--lime); }
+    .walk-content h3 { color: var(--ink); }
+    .walk-content p { color: var(--muted); }
+    .walk-metric { border-color: var(--line); }
+    .walk-metric span { color: var(--muted); }
+    .tile-index { display: block; margin-bottom: 17px; font-size: 10px; font-weight: 800; letter-spacing: .12em; opacity: .75; }
+    .walk-tile strong { display: block; font-size: 18px; letter-spacing: -.035em; }
+    .walk-tile span:last-child { display: block; margin-top: 6px; font-size: 10px; opacity: .78; }
+    .walk-content { min-height: 247px; display: grid; grid-template-columns: 1fr 190px; gap: 35px; align-items: center; padding: 32px; }
+    .walk-content .eyebrow { color: var(--lime); }
+    .walk-content h3 { margin: 10px 0; font-size: 27px; letter-spacing: -.045em; }
+    .walk-content p { max-width: 720px; margin: 0; color: #bdc8d0; font-size: 13px; line-height: 1.8; }
+    .walk-metric { padding: 18px; border: 1px solid rgba(255,255,255,.14); border-radius: 11px; text-align: center; }
+    .walk-metric strong { display: block; color: var(--lime); font-size: 32px; letter-spacing: -.06em; }
+    .walk-metric span { display: block; margin-top: 4px; color: #aebbc4; font-size: 9px; line-height: 1.5; }
+    .demo-section { background: var(--paper); }
+    .demo-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 22px; align-items: stretch; }
+    .demo-panel, .agent-panel { border: 1px solid var(--line); border-radius: 14px; background: var(--white); box-shadow: 0 8px 30px rgba(0,0,0,.12); }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 19px 21px; border-bottom: 1px solid var(--line); }
+    .panel-head strong { display: block; font-size: 13px; }
+    .panel-head small { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; }
+    .panel-kicker { color: var(--teal); font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .request { margin: 18px 20px 13px; padding: 14px; border-radius: 9px; color: var(--body-text); background: var(--surface-soft); font-size: 11px; line-height: 1.7; }
+    .request b { color: var(--teal); }
+    .feed { min-height: 200px; margin: 0 20px; padding: 7px 0; }
+    .feed-empty { display: grid; min-height: 180px; place-items: center; color: var(--subtle-text); text-align: center; font-size: 11px; }
+    .feed-empty span { display: block; margin-bottom: 9px; color: var(--teal); font-size: 25px; }
+    .feed-row { display: flex; gap: 11px; padding: 10px 0; border-bottom: 1px solid var(--line); animation: fadeUp .3s ease both; }
+    .feed-icon { flex: 0 0 24px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 7px; color: var(--teal); background: var(--mint); font-size: 11px; font-weight: 800; }
+    .feed-row strong { display: block; font-size: 10px; }
+    .feed-row p { margin: 3px 0 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .feed-row.waiting .feed-icon { color: var(--warm-text); background: var(--amber); }
+    .approve-btn { margin-top: 8px; padding: 7px 9px; border: 0; border-radius: 6px; color: white; background: var(--teal); font-size: 9px; font-weight: 750; }
+    .progress-wrap { padding: 13px 20px 20px; }
+    .progress-meta { display: flex; justify-content: space-between; color: var(--muted); font-size: 9px; }
+    .progress-track { height: 5px; overflow: hidden; margin-top: 8px; border-radius: 99px; background: var(--line); }
+    .progress-value { width: 0; height: 100%; border-radius: inherit; background: var(--teal); transition: width .35s ease; }
+    .demo-controls { display: flex; gap: 8px; }
+    .small-btn { padding: 8px 10px; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: var(--white); font-size: 9px; font-weight: 750; }
+    .small-btn.primary { border-color: var(--teal); color: white; background: var(--teal); }
+    .small-btn:disabled { cursor: default; opacity: .45; }
+    .agent-list { padding: 9px 20px 17px; }
+    .agent-item { display: grid; grid-template-columns: 30px 1fr auto; gap: 11px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .agent-number { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; color: var(--muted); background: var(--surface-soft); font-size: 9px; font-weight: 800; }
+    .agent-item.active .agent-number { color: var(--navy); background: var(--lime); }
+    .agent-item.done .agent-number { color: var(--teal); background: var(--mint); }
+    .agent-item.waiting .agent-number { color: var(--warm-text); background: var(--amber); }
+    .agent-item strong { font-size: 10px; }
+    .agent-item small { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
+    .gate { padding: 4px 6px; border-radius: 5px; color: var(--warm-text); background: var(--amber); font-size: 8px; font-weight: 800; }
+    .step-strip { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-top: 22px; }
+    .step-pill { padding: 10px 7px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: var(--white); text-align: center; font-size: 9px; font-weight: 700; }
+    .step-pill.active { border-color: #a5ca70; color: #375016; background: var(--lime); }
+    .agents-section { background: var(--white); }
+    .stage-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 25px 0 22px; }
+    .stage-tab { padding: 10px 14px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); background: transparent; font-size: 10px; font-weight: 700; }
+    .stage-tab[aria-selected="true"] { border-color: var(--navy); color: white; background: var(--navy); }
+    .agent-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 13px; }
+    .agent-card { padding: 19px; border: 1px solid var(--line); border-radius: 11px; background: var(--white); }
+    .agent-card-top { display: flex; justify-content: space-between; align-items: center; }
+    .agent-card-top span:first-child { color: var(--teal); font-size: 9px; font-weight: 850; letter-spacing: .1em; }
+    .agent-card-top span:last-child { color: var(--subtle-text); font-size: 10px; }
+    .agent-card h3 { margin: 14px 0 8px; font-size: 14px; letter-spacing: -.02em; }
+    .agent-card p { min-height: 50px; margin: 0; color: var(--muted); font-size: 10px; line-height: 1.65; }
+    .agent-proof { margin-top: 15px; padding: 10px; border-radius: 7px; color: var(--proof-text); background: var(--proof-surface); font-size: 9px; font-weight: 650; line-height: 1.5; }
+    .human-banner { display: flex; align-items: center; gap: 11px; margin-top: 17px; padding: 13px 15px; border: 1px solid var(--warm-text); border-radius: 9px; color: var(--warm-text); background: var(--warm-surface); font-size: 10px; line-height: 1.5; }
+    .human-banner strong { color: var(--warm-text); }
+    .interview-section { color: white; background: var(--navy); }
+    .interview-section .eyebrow { color: var(--lime); }
+    .interview-section .section-head p { color: #b2bec8; }
+    .interview-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 23px; align-items: stretch; }
+    .candidate-card, .transcript-card { border: 1px solid rgba(255,255,255,.13); border-radius: 13px; background: rgba(255,255,255,.055); }
+    .candidate-card { padding: 24px; }
+    .avatar { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; color: var(--navy); background: var(--lime); font-size: 14px; font-weight: 850; }
+    .candidate-card h3 { margin: 15px 0 4px; font-size: 18px; }
+    .candidate-card small { color: #9eacb7; font-size: 10px; }
+    .score { display: flex; align-items: end; gap: 7px; margin: 20px 0; }
+    .score strong { color: var(--lime); font-size: 47px; line-height: 1; letter-spacing: -.06em; }
+    .score span { padding-bottom: 5px; color: #aab8c2; font-size: 9px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags span { padding: 6px 8px; border: 1px solid rgba(255,255,255,.12); border-radius: 99px; color: #c6d0d7; font-size: 8px; }
+    .transcript-card { padding: 20px; }
+    .transcript-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.11); color: #d8e0e4; font-size: 10px; font-weight: 750; }
+    .transcript-head span { color: var(--lime); font-size: 8px; }
+    .utterance { margin-top: 14px; }
+    .speaker { margin-bottom: 5px; color: var(--lime); font-size: 9px; font-weight: 800; }
+    .utterance p { margin: 0; color: #c2cdd4; font-size: 10px; line-height: 1.65; }
+    .assessment { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; margin-top: 18px; padding: 12px; border-radius: 8px; background: rgba(199,243,107,.1); }
+    .assessment b { color: var(--lime); font-size: 12px; }
+    .assessment small { color: #c2cdd4; font-size: 9px; line-height: 1.5; }
+    .architecture-section { background: var(--section-alt); }
+    .architecture { display: grid; gap: 8px; }
+    .arch-row { display: grid; grid-template-columns: 168px 1fr; gap: 15px; align-items: center; padding: 15px 17px; border: 1px solid var(--line); border-radius: 9px; background: var(--white); }
+    .arch-label { color: var(--teal); font-size: 9px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+    .arch-items { display: flex; flex-wrap: wrap; gap: 7px; }
+    .arch-items span { padding: 7px 9px; border-radius: 6px; color: var(--body-text); background: var(--surface-chip); font-size: 9px; }
+    .arch-row.governance { border-color: #8da95a; background: var(--proof-surface); }
+    .architecture-note { margin: 14px 0 0; color: var(--muted); font-size: 9px; }
+    .roi-section { background: var(--white); }
+    .roi-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 45px; align-items: start; }
+    .roi-highlight { padding: 24px; border-radius: 13px; color: white; background: var(--navy); }
+    .roi-highlight small { color: #aab7c0; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .roi-highlight strong { display: block; margin: 11px 0 5px; color: var(--lime); font-size: 49px; line-height: 1; letter-spacing: -.07em; }
+    .roi-highlight p { margin: 0; color: #bdc8d0; font-size: 10px; line-height: 1.6; }
+    .roi-table { width: 100%; border-collapse: collapse; }
+    .roi-table th { padding: 0 10px 11px; color: var(--muted); text-align: right; font-size: 9px; font-weight: 800; }
+    .roi-table th:first-child, .roi-table td:first-child { padding-left: 0; text-align: left; }
+    .roi-table td { padding: 12px 10px; border-top: 1px solid var(--line); text-align: right; font-size: 10px; }
+    .roi-table td:first-child { color: var(--body-text); font-weight: 650; }
+    .roi-table td:last-child { color: var(--teal); font-weight: 800; }
+    .closing { padding: 68px 0; color: white; background: #13253a; }
+    .closing-inner { display: grid; grid-template-columns: 1fr auto; gap: 35px; align-items: center; }
+    .closing h2 { max-width: 750px; margin: 13px 0; font-size: clamp(28px, 4vw, 42px); letter-spacing: -.055em; line-height: 1.1; }
+    .closing p { max-width: 750px; margin: 0; color: #b3c0c9; font-size: 11px; line-height: 1.7; }
+    .closing-list { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 17px; }
+    .closing-list span { padding: 7px 9px; border: 1px solid rgba(255,255,255,.13); border-radius: 99px; color: #cfdbdf; font-size: 8px; }
+    footer { padding: 19px 0; color: #8997a2; background: #101b2b; font-size: 9px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 15px; }
+    .notice { color: #aab6bf; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 800px) {
+      .hero-grid, .problem-grid, .demo-grid, .interview-grid, .roi-layout { grid-template-columns: 1fr; }
+      .hero-grid { gap: 35px; }
+      .hero-card { max-width: 520px; }
+      .agent-cards { grid-template-columns: repeat(2,1fr); }
+      .nav-links { gap: 13px; }
+      .nav-links a:not(.nav-demo) { display: none; }
+      .closing-inner { grid-template-columns: 1fr; }
+      .closing-inner .btn { justify-self: start; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 30px, 1160px); }
+      .nav { gap: 10px; }
+      .nav-links { gap: 7px; }
+      .nav-links .nav-demo { display: none; }
+      .theme-toggle { padding: 8px; font-size: 9px; }
+      .hero { padding: 63px 0 48px; }
+      section { padding: 58px 0; }
+      .ticker-inner { overflow-x: auto; justify-content: flex-start; }
+      .pain-list, .walk-tiles, .agent-cards { grid-template-columns: 1fr; }
+      .walk-tile { min-height: 100px; padding: 17px 20px; }
+      .tile-index { margin-bottom: 8px; }
+      .walk-content { grid-template-columns: 1fr; padding: 23px; }
+      .walk-metric { text-align: left; }
+      .walk-metric strong { font-size: 26px; }
+      .step-strip { grid-template-columns: repeat(2,1fr); }
+      .arch-row { grid-template-columns: 1fr; gap: 10px; }
+      .panel-head { align-items: flex-start; }
+      .footer-inner { flex-direction: column; }
+      .roi-table th, .roi-table td { padding-right: 5px; padding-left: 5px; font-size: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <header class="topbar">
+    <nav class="nav wrap" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="TalentScout AI home">
+        <span class="brand-mark">T</span><span>TalentScout AI<small>Agentic workforce</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="#demo">Live demo</a><a href="#agents">Agent team</a><a href="#architecture">Architecture</a><a href="#roi">ROI</a>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true">☼ Light mode</button>
+        <a class="nav-demo" href="#walkthrough">Executive walkthrough ↗</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Executive demo · Rogers Communications</span>
+          <h1>Autonomous workforce acquisition &amp; onboarding.</h1>
+          <p class="hero-copy">From job requisition to productive employee with a team of AI agents working alongside HR — twelve coordinated specialists, with humans in control at every approval gate.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#demo">Run the live demo <span aria-hidden="true">→</span></a>
+            <a class="btn btn-ghost" href="#walkthrough">Explore the solution</a>
+          </div>
+          <p class="hero-note"><span>●</span> Governed by Agent365 &nbsp;·&nbsp; Built for high-volume telecom hiring</p>
+        </div>
+        <aside class="hero-card" aria-label="TalentScout snapshot">
+          <div class="card-top"><span>Workforce snapshot</span><span class="live-dot">Illustrative</span></div>
+          <div class="hero-stat"><div><strong>62 → 21</strong><small>Average time-to-fill, days</small></div><span class="trend">−66%</span></div>
+          <div class="hero-stat"><div><strong>$8M</strong><small>Annual recruiting spend today</small></div><span class="trend">Opportunity</span></div>
+          <div class="hero-stat"><div><strong>1,240</strong><small>Open frontline roles</small></div><span class="trend">Across Canada</span></div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="ticker" aria-label="Roles supported">
+      <div class="ticker-inner wrap"><span>Network technicians</span><span>Field service engineers</span><span>Retail associates</span><span>Contact centre agents</span><span>Enterprise sales</span><span>Cybersecurity</span></div>
+    </div>
+
+    <section class="problem-section">
+      <div class="wrap problem-grid">
+        <div>
+          <span class="eyebrow">The executive problem</span>
+          <h2>Frontline hiring can't keep pace with the business.</h2>
+          <p>A VP of Customer Care needs 200 contact centre agents before Black Friday. Today, that can mean 8–10 weeks, thousands of manual resume reviews and candidates lost to a slow process.</p>
+        </div>
+        <div class="pain-list">
+          <div class="pain"><b>↗</b><span>Recruiters manually review thousands of resumes</span></div>
+          <div class="pain"><b>↗</b><span>Qualified candidates drop out mid-funnel</span></div>
+          <div class="pain"><b>↗</b><span>Screening quality varies by team and region</span></div>
+          <div class="pain"><b>↗</b><span>Technician shortages and attrition compound</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="walkthrough" id="walkthrough">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">A three-minute executive walkthrough</span>
+          <h2>See the value before the workflow.</h2>
+          <p>Select a tile to understand what TalentScout does, how the agent workforce operates, and why it matters to HR.</p>
+        </div>
+        <div class="walk-shell">
+          <div class="walk-tiles" role="tablist" aria-label="Executive walkthrough topics">
+            <button class="walk-tile" id="tile-what" role="tab" aria-selected="true" aria-controls="walk-panel" data-walk="what">
+              <span class="tile-index">01 / WHAT</span><strong>Work gets done</strong><span>One hiring request, end-to-end execution.</span>
+            </button>
+            <button class="walk-tile" id="tile-how" role="tab" aria-selected="false" aria-controls="walk-panel" data-walk="how" tabindex="-1">
+              <span class="tile-index">02 / HOW</span><strong>People stay in control</strong><span>Specialist agents, clear handoffs, approval gates.</span>
+            </button>
+            <button class="walk-tile" id="tile-why" role="tab" aria-selected="false" aria-controls="walk-panel" data-walk="why" tabindex="-1">
+              <span class="tile-index">03 / WHY HR</span><strong>Capacity compounds</strong><span>Faster hiring without sacrificing candidate care.</span>
+            </button>
+          </div>
+          <div class="walk-content" id="walk-panel" role="tabpanel" aria-labelledby="tile-what" tabindex="0">
+            <div><span class="eyebrow" id="walk-eyebrow">What it does</span><h3 id="walk-title">Turns a hiring goal into a complete talent pipeline.</h3><p id="walk-copy">A leader asks for 200 customer care agents. TalentScout forecasts demand, drafts requisitions, finds and engages candidates, runs first-round interviews, assembles a shortlist, prepares offers and gets new hires ready for Day 1.</p></div>
+            <div class="walk-metric"><strong id="walk-stat">12 agents</strong><span id="walk-caption">cover the hiring lifecycle, from planning through employee success</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-section" id="demo">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Scenes 2 &amp; 3 · Autonomous recruiting</span>
+          <h2>One request. A coordinated workforce.</h2>
+          <p>Follow the request through the agent team. The demo is illustrative; approval checkpoints stay visible and in human hands.</p>
+        </div>
+        <div class="demo-grid">
+          <div class="demo-panel">
+            <div class="panel-head">
+              <div><strong>Microsoft Teams · TalentScout AI</strong><small>Agent365 · Rogers Communications</small></div>
+              <div class="demo-controls"><button class="small-btn" id="reset-demo" type="button">Reset</button><button class="small-btn primary" id="run-demo" type="button">Run demo</button></div>
+            </div>
+            <div class="request"><b>VP of Customer Care:</b> “We need 200 customer care agents in place before Black Friday. Prioritize bilingual candidates and keep me posted on readiness.”</div>
+            <div class="feed" id="activity-feed" aria-live="polite"><div class="feed-empty"><div><span>✳</span>Ready when you are.<br>Run the demo to see the agent activity stream.</div></div></div>
+            <div class="progress-wrap"><div class="progress-meta"><span>Hiring lifecycle progress</span><span id="progress-label">0 / 12 agents complete</span></div><div class="progress-track"><div class="progress-value" id="progress-value"></div></div></div>
+          </div>
+          <div class="agent-panel">
+            <div class="panel-head"><div><strong>Agent orchestration</strong><small>Azure AI Foundry · governed by Agent365</small></div><span class="panel-kicker">12 specialists</span></div>
+            <div class="agent-list" id="orchestration-list"></div>
+          </div>
+        </div>
+        <div class="step-strip" aria-label="Hiring lifecycle stages">
+          <div class="step-pill active">01 &nbsp; Plan</div><div class="step-pill">02 &nbsp; Source</div><div class="step-pill">03 &nbsp; Evaluate</div><div class="step-pill">04 &nbsp; Hire</div><div class="step-pill">05 &nbsp; Onboard &amp; succeed</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="agents-section" id="agents">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">The AI agent team</span>
+          <h2>Twelve specialists. One hiring lifecycle.</h2>
+          <p>Each agent owns a stage, hands context forward and escalates wherever policy requires a human decision.</p>
+        </div>
+        <div class="stage-tabs" role="tablist" aria-label="Filter agents by lifecycle stage">
+          <button class="stage-tab" type="button" aria-selected="true" data-stage="all">All agents · 12</button>
+          <button class="stage-tab" type="button" aria-selected="false" data-stage="plan">Plan · 2</button>
+          <button class="stage-tab" type="button" aria-selected="false" data-stage="source">Source · 3</button>
+          <button class="stage-tab" type="button" aria-selected="false" data-stage="evaluate">Evaluate · 2</button>
+          <button class="stage-tab" type="button" aria-selected="false" data-stage="hire">Hire · 2</button>
+          <button class="stage-tab" type="button" aria-selected="false" data-stage="onboard">Onboard &amp; succeed · 3</button>
+        </div>
+        <div class="agent-cards" id="agent-cards"></div>
+        <div class="human-banner"><span aria-hidden="true">◉</span><span><strong>Human in control.</strong> Recruiter approval before publishing, hiring manager approval for the shortlist, and compensation approval before any offer is sent.</span></div>
+      </div>
+    </section>
+
+    <section class="interview-section">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Scenes 4 &amp; 5 · Interview &amp; approval</span>
+          <h2>Explainable recommendations. Human decisions.</h2>
+          <p>AI can conduct and assess a structured first-round interview. A hiring manager sees the evidence and decides who advances.</p>
+        </div>
+        <div class="interview-grid">
+          <article class="candidate-card">
+            <div class="avatar" aria-hidden="true">SJ</div><h3>Sarah Johnson</h3><small>Toronto, ON · Bilingual EN/FR</small>
+            <div class="score"><strong>94</strong><span>Talent score / 100</span></div>
+            <div class="tags"><span>Telecom experience</span><span>Bilingual</span><span>4 years customer-facing</span><span>Contact centre</span></div>
+          </article>
+          <article class="transcript-card">
+            <div class="transcript-head">Live voice interview transcript <span>AZURE SPEECH + OPENAI</span></div>
+            <div class="utterance"><div class="speaker">TalentScout AI</div><p>A customer calls for the third time this month about a billing error and is furious. Walk me through your first 60 seconds.</p></div>
+            <div class="utterance"><div class="speaker">Sarah Johnson</div><p>I'd let them finish, acknowledge that three calls is unacceptable, and take ownership end to end. I'd read back the charge and explain exactly what I'm doing next.</p></div>
+            <div class="assessment"><b>Green — advance</b><small>Communication 96 · Empathy 96 · Problem solving 91<br>Rationale is attached to every recommendation.</small></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="architecture-section" id="architecture">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Reference architecture</span>
+          <h2>Built around the Microsoft stack you already run.</h2>
+          <p>Orchestrated in Azure AI Foundry, grounded in systems of record and governed end-to-end.</p>
+        </div>
+        <div class="architecture">
+          <div class="arch-row"><div class="arch-label">User layer</div><div class="arch-items"><span>Microsoft Teams</span><span>Employee portal</span><span>HR portal</span><span>Mobile app</span></div></div>
+          <div class="arch-row"><div class="arch-label">AI layer</div><div class="arch-items"><span>Azure AI Foundry orchestration</span><span>Planning &amp; requisition agents</span><span>Discovery &amp; interview agents</span><span>Assessment &amp; onboarding agents</span></div></div>
+          <div class="arch-row"><div class="arch-label">Intelligence layer</div><div class="arch-items"><span>Azure OpenAI</span><span>Azure AI Search</span><span>Microsoft Graph</span><span>Azure Speech Services</span></div></div>
+          <div class="arch-row"><div class="arch-label">Workflow layer</div><div class="arch-items"><span>Power Automate</span><span>Logic Apps</span><span>Microsoft Fabric data pipelines</span></div></div>
+          <div class="arch-row"><div class="arch-label">Systems of record</div><div class="arch-items"><span>Workday</span><span>SAP SuccessFactors</span><span>ServiceNow</span><span>Microsoft 365</span></div></div>
+          <div class="arch-row governance"><div class="arch-label">Governance · Agent365</div><div class="arch-items"><span>Human approval workflows</span><span>Role-based access</span><span>Compliance &amp; audit trails</span><span>Business process controls</span></div></div>
+        </div>
+        <p class="architecture-note">Illustrative reference architecture. Integrations and controls are subject to enterprise configuration and validation.</p>
+      </div>
+    </section>
+
+    <section class="roi-section" id="roi">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Executive ROI dashboard</span>
+          <h2>More capacity. Better staffing readiness.</h2>
+          <p>Illustrative outcomes show where an autonomous, governed recruiting funnel can shift cost, speed and recruiter capacity.</p>
+        </div>
+        <div class="roi-layout">
+          <div class="roi-highlight"><small>Potential time-to-fill reduction</small><strong>66%</strong><p>From 62 days to 21 days in this modeled telecom scenario.</p></div>
+          <table class="roi-table">
+            <thead><tr><th>Metric</th><th>Today</th><th>With TalentScout</th><th>Change</th></tr></thead>
+            <tbody>
+              <tr><td>Time-to-fill</td><td>62 days</td><td>21 days</td><td>−66%</td></tr>
+              <tr><td>Cost-per-hire</td><td>$6,000</td><td>$2,150</td><td>−64%</td></tr>
+              <tr><td>Resume review effort</td><td>100%</td><td>10%</td><td>−90%</td></tr>
+              <tr><td>Recruiter productivity</td><td>1×</td><td>3×</td><td>+200%</td></tr>
+              <tr><td>Day-1 readiness</td><td>54%</td><td>81%</td><td>+50%</td></tr>
+              <tr><td>First-year attrition</td><td>31%</td><td>19%</td><td>−12 pts</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="wrap closing-inner">
+        <div><span class="eyebrow">The closing</span><h2>Not a recruiting chatbot. A coordinated workforce of autonomous HR agents.</h2><p>Forecast demand, find talent, assess candidates and prepare people for Day 1 — with humans making the decisions that matter and Agent365 providing governance across every step.</p><div class="closing-list"><span>Forecast demand</span><span>Create requisitions</span><span>Find candidates</span><span>Conduct interviews</span><span>Recommend hires</span><span>Onboard employees</span><span>Support employee success</span></div></div>
+        <a class="btn btn-primary" href="#demo">Replay the demo ↗</a>
+      </div>
+    </section>
+  </main>
+  <footer><div class="wrap footer-inner"><span>TalentScout AI · Autonomous Workforce Acquisition &amp; Onboarding</span><span class="notice">Illustrative executive demo — figures are modeled, not actual results.</span></div></footer>
+
+  <script>
+    const agents = [
+      { name: "Workforce Planning Agent", stage: "plan", summary: "Forecasts demand from operational signals, attrition and workforce schedules.", proof: "Recommends 200 agents across Toronto, Moncton and Calgary." },
+      { name: "Job Requisition Agent", stage: "plan", gate: true, summary: "Drafts compliant job descriptions, scorecards and requisitions.", proof: "6 requisitions drafted — recruiter review before publishing." },
+      { name: "Candidate Discovery Agent", stage: "source", summary: "Finds and reactivates talent across career sites, referrals and talent pools.", proof: "12,500 potential candidates identified across 3 regions." },
+      { name: "Candidate Matching Agent", stage: "source", summary: "Ranks candidates against role criteria and explains each Talent Score.", proof: "1,840 candidates scored 80+; top match scored 94/100." },
+      { name: "Outreach Agent", stage: "source", summary: "Personalizes multi-channel outreach, follow-ups and interview booking.", proof: "1,840 candidates contacted; 41% response in 48 hours." },
+      { name: "AI Recruiting Agent", stage: "evaluate", summary: "Runs structured, on-demand voice interviews and captures transcripts.", proof: "612 first-round interviews completed in 72 hours." },
+      { name: "Assessment Agent", stage: "evaluate", summary: "Scores job-related skills and provides a recommendation with rationale.", proof: "Green / Yellow / Red recommendations with evidence attached." },
+      { name: "Hiring Manager Agent", stage: "hire", gate: true, summary: "Delivers a focused shortlist with candidate strengths and interview cues.", proof: "Top 15 finalists for the VP — manager decides who advances." },
+      { name: "Offer Agent", stage: "hire", gate: true, summary: "Prepares offer packages and models likely acceptance.", proof: "Compensation approval required before an offer is sent." },
+      { name: "Onboarding Agent", stage: "onboard", summary: "Coordinates accounts, equipment, access and required training.", proof: "Day-1 readiness checklist coordinated before each start date." },
+      { name: "Learning Agent", stage: "onboard", summary: "Builds a ramp plan around each new hire's experience and skill gaps.", proof: "Personalized four-week plan; modeled proficiency gain of 34%." },
+      { name: "Employee Success Agent", stage: "onboard", summary: "Answers policy questions, shares readiness signals and flags onboarding risk.", proof: "Proactive support through the first 90 days." }
+    ];
+    const stageNames = { plan: "Plan", source: "Source", evaluate: "Evaluate", hire: "Hire", onboard: "Onboard & succeed" };
+    const agentCards = document.getElementById("agent-cards");
+    const orchestration = document.getElementById("orchestration-list");
+    const feed = document.getElementById("activity-feed");
+    const runButton = document.getElementById("run-demo");
+    const resetButton = document.getElementById("reset-demo");
+    const themeToggle = document.getElementById("theme-toggle");
+    let demoTimer = null;
+    let completed = 0;
+    let pendingApproval = null;
+
+    themeToggle.addEventListener("click", () => {
+      const darkMode = document.body.dataset.theme !== "light";
+      document.body.dataset.theme = darkMode ? "light" : "dark";
+      themeToggle.setAttribute("aria-pressed", String(!darkMode));
+      themeToggle.setAttribute("aria-label", `Switch to ${darkMode ? "dark" : "light"} theme`);
+      themeToggle.textContent = darkMode ? "☾ Dark mode" : "☼ Light mode";
+      document.querySelector('meta[name="theme-color"]').setAttribute("content", darkMode ? "#f5f7f5" : "#0c131e");
+    });
+
+    function renderAgentCards(filter = "all") {
+      const visible = filter === "all" ? agents : agents.filter(agent => agent.stage === filter);
+      agentCards.innerHTML = visible.map(agent => {
+        return `<article class="agent-card"><div class="agent-card-top"><span>${stageNames[agent.stage].toUpperCase()}</span><span>${String(agents.indexOf(agent) + 1).padStart(2, "0")}</span></div><h3>${agent.name}</h3><p>${agent.summary}</p><div class="agent-proof">${agent.proof}</div></article>`;
+      }).join("");
+    }
+    function renderOrchestration() {
+      orchestration.innerHTML = agents.map((agent, index) => {
+        const waiting = pendingApproval === index;
+        let state = waiting ? "waiting" : index < completed ? "done" : index === completed && demoTimer ? "active" : "";
+        const stateText = waiting ? "Approval required" : index < completed ? "Complete" : index === completed && demoTimer ? "Working…" : stageNames[agent.stage];
+        return `<div class="agent-item ${state}"><span class="agent-number">${index < completed ? "✓" : String(index + 1).padStart(2, "0")}</span><div><strong>${agent.name}</strong><small>${stateText}</small></div>${agent.gate ? '<span class="gate">HUMAN GATE</span>' : ""}</div>`;
+      }).join("");
+    }
+    const activity = [
+      "Analyzed call-volume forecasts, attrition trends and class capacity. Demand plan: 200 agents over 90 days.",
+      "Drafted six bilingual requisitions with skills, compensation bands and an interview rubric. Recruiter approval is required before publishing.",
+      "Searched career sites, referrals and internal talent pools. Identified 12,500 potential candidates.",
+      "Matched experience, language and service skills. Ranked 1,840 candidates at 80+; top profile scored 94.",
+      "Prepared personalized outreach and interview slots. Candidate response tracking is ready.",
+      "Completed structured first-round interviews; transcripts are available for recruiter review.",
+      "Scored interview evidence across communication, empathy and problem-solving; rationale attached.",
+      "Delivered a ranked shortlist of 15 finalists. The hiring manager must approve who advances.",
+      "Prepared offer packages and acceptance forecasts. Compensation approval is required before sending.",
+      "Day-1 setup, equipment, access and learning plans are coordinated for accepted hires."
+    ];
+    function addActivity(index) {
+      if (index === 0) feed.innerHTML = "";
+      const agent = agents[index];
+      const row = document.createElement("div");
+      row.className = `feed-row${agent.gate ? " waiting" : ""}`;
+      row.innerHTML = `<span class="feed-icon">${agent.gate ? "!" : "✓"}</span><div><strong>${agent.name}${agent.gate ? " · Approval checkpoint" : ""}</strong><p>${activity[index]}</p></div>`;
+      feed.appendChild(row);
+      if (agent.gate) {
+        const approve = document.createElement("button");
+        approve.className = "approve-btn";
+        approve.type = "button";
+        approve.textContent = index === 1 ? "Recruiter: approve requisitions" : index === 7 ? "Hiring manager: approve shortlist" : "Compensation: approve offer";
+        approve.setAttribute("aria-label", `Approve ${agent.name} checkpoint and continue the demo`);
+        approve.addEventListener("click", () => approveCheckpoint(index, approve));
+        row.lastElementChild.appendChild(approve);
+      }
+      feed.scrollTop = feed.scrollHeight;
+    }
+    function finishDemo() {
+      clearTimeout(demoTimer);
+      demoTimer = null;
+      pendingApproval = null;
+      runButton.disabled = false;
+      runButton.textContent = "Replay demo";
+      renderOrchestration();
+    }
+    function approveCheckpoint(index, button) {
+      if (pendingApproval !== index) return;
+      pendingApproval = null;
+      button.disabled = true;
+      button.textContent = "Approved";
+      const row = document.createElement("div");
+      row.className = "feed-row";
+      row.innerHTML = `<span class="feed-icon">✓</span><div><strong>Human approval recorded</strong><p>${agents[index].name} checkpoint approved. The agent workflow can continue.</p></div>`;
+      feed.appendChild(row);
+      renderOrchestration();
+      runButton.disabled = true;
+      runButton.textContent = "Running…";
+      demoTimer = setTimeout(advanceDemo, 550);
+    }
+    function advanceDemo() {
+      demoTimer = null;
+      if (pendingApproval !== null) return;
+      if (completed >= agents.length) { finishDemo(); return; }
+      const index = completed;
+      addActivity(index);
+      completed += 1;
+      document.getElementById("progress-label").textContent = `${completed} / 12 agents complete`;
+      document.getElementById("progress-value").style.width = `${(completed / agents.length) * 100}%`;
+      if (agents[index].gate) {
+        pendingApproval = index;
+        runButton.disabled = true;
+        runButton.textContent = "Approval required";
+      } else if (completed === agents.length) {
+        finishDemo();
+      } else {
+        demoTimer = setTimeout(advanceDemo, 850);
+      }
+      renderOrchestration();
+    }
+    function runDemo() {
+      if (demoTimer || pendingApproval !== null) return;
+      if (completed === agents.length) resetDemo();
+      runButton.disabled = true;
+      runButton.textContent = "Running…";
+      renderOrchestration();
+      advanceDemo();
+    }
+    function resetDemo() {
+      clearTimeout(demoTimer);
+      demoTimer = null;
+      completed = 0;
+      pendingApproval = null;
+      feed.innerHTML = '<div class="feed-empty"><div><span>✳</span>Ready when you are.<br>Run the demo to see the agent activity stream.</div></div>';
+      document.getElementById("progress-label").textContent = "0 / 12 agents complete";
+      document.getElementById("progress-value").style.width = "0";
+      runButton.disabled = false;
+      runButton.textContent = "Run demo";
+      renderOrchestration();
+    }
+    runButton.addEventListener("click", runDemo);
+    resetButton.addEventListener("click", resetDemo);
+    document.querySelectorAll(".stage-tab").forEach(tab => tab.addEventListener("click", () => {
+      document.querySelectorAll(".stage-tab").forEach(item => { item.setAttribute("aria-selected", String(item === tab)); });
+      renderAgentCards(tab.dataset.stage);
+    }));
+
+    const walkthrough = {
+      what: {
+        eyebrow: "What it does", title: "Turns a hiring goal into a complete talent pipeline.",
+        copy: "A leader asks for 200 customer care agents. TalentScout forecasts demand, drafts requisitions, finds and engages candidates, runs first-round interviews, assembles a shortlist, prepares offers and gets new hires ready for Day 1.",
+        stat: "12 agents", caption: "cover the hiring lifecycle, from planning through employee success"
+      },
+      how: {
+        eyebrow: "How it works", title: "A specialist team moves work forward — with people at the gates.",
+        copy: "Agents exchange context across planning, sourcing, evaluation, hiring and onboarding. Every recommendation carries evidence; recruiters, hiring managers and compensation partners approve the decisions reserved for them.",
+        stat: "3 approval gates", caption: "keep publishing, shortlisting and compensation decisions with people"
+      },
+      why: {
+        eyebrow: "Why HR wants it", title: "Give recruiters their time back and candidates a faster path.",
+        copy: "Automate repetitive coordination and first-pass work so HR teams can focus on candidate relationships, judgment and hard-to-fill roles. The modeled telecom scenario cuts time-to-fill while keeping every action reviewable.",
+        stat: "62 → 21 days", caption: "illustrative time-to-fill improvement in the executive scenario"
+      }
+    };
+    document.querySelectorAll(".walk-tile").forEach((tab, index, tabs) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(item => { item.setAttribute("aria-selected", String(item === tab)); item.tabIndex = item === tab ? 0 : -1; });
+        const copy = walkthrough[tab.dataset.walk];
+        document.getElementById("walk-panel").setAttribute("aria-labelledby", tab.id);
+        document.getElementById("walk-eyebrow").textContent = copy.eyebrow;
+        document.getElementById("walk-title").textContent = copy.title;
+        document.getElementById("walk-copy").textContent = copy.copy;
+        document.getElementById("walk-stat").textContent = copy.stat;
+        document.getElementById("walk-caption").textContent = copy.caption;
+      });
+      tab.addEventListener("keydown", event => {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        event.preventDefault();
+        tabs[(index + (event.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length].focus();
+        tabs[(index + (event.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length].click();
+      });
+    });
+    renderAgentCards();
+    renderOrchestration();
+  </script>
+</body>
+</html>
